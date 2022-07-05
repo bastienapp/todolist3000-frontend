@@ -1,34 +1,19 @@
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 
-const todos = [
-  {
-    id: 1,
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    done: false,
-  },
-  {
-    id: 2,
-    title: "Nemo laboriosam earum officia aliquid repudiandae",
-    done: true,
-  },
-  {
-    id: 3,
-    title:
-      "Mollitia, saepe expedita a exercitationem explicabo reiciendis officia eligendi?",
-    done: true,
-  },
-  {
-    id: 4,
-    title:
-      "Officia, alias animi tempore ex similique incidunt provident quam at libero.",
-    done: false,
-  },
-];
-
 function TodoList() {
+  const [todos, setTodos] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/todos`)
+      .then((response) => response.data)
+      .then((data) => setTodos(data))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
-    <div className='TodoList'>
+    <div className="TodoList">
       <ul>
         {todos.map((todo) => (
           <TodoItem key={todo.id} {...todo} />
